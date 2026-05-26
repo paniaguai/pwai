@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PawVibesZ 🐾 Cats on Zoom × AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Space+Mono:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon-pink: #ff2d78;
+    --neon-cyan: #00f5ff;
+    --neon-yellow: #ffe600;
+    --neon-green: #39ff14;
+    --neon-orange: #ff6b00;
+    --neon-purple: #bf00ff;
+    --deep-navy: #030b1a;
+    --card-bg: rgba(10, 20, 40, 0.85);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep-navy);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--neon-cyan), var(--neon-pink));
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s, height 0.2s;
+    mix-blend-mode: screen;
+    box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-pink);
+  }
+
+  /* Animated BG */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,245,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,255,0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+  }
+
+  .floating-particles {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+    opacity: 0.6;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) scale(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* HERO */
+  .hero {
+    position: relative; z-index: 10;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .hero-badge {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 50px;
+    margin-bottom: 24px;
+    animation: pulse 2s ease-in-out infinite;
+    box-shadow: 0 0 30px var(--neon-pink);
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 20px var(--neon-pink); }
+    50% { box-shadow: 0 0 60px var(--neon-pink), 0 0 100px var(--neon-purple); }
+  }
+
+  .hero-title {
+    font-family: 'Boogaloo', cursive;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg,
+      var(--neon-yellow) 0%,
+      var(--neon-orange) 20%,
+      var(--neon-pink) 40%,
+      var(--neon-purple) 60%,
+      var(--neon-cyan) 80%,
+      var(--neon-green) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(255,45,120,0.5));
+    animation: titleShimmer 4s ease-in-out infinite;
+    background-size: 200% auto;
+  }
+
+  @keyframes titleShimmer {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 200% center; }
+  }
+
+  .hero-subtitle {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(1.2rem, 3vw, 2.2rem);
+    color: var(--neon-cyan);
+    margin-top: 16px;
+    text-shadow: 0 0 20px var(--neon-cyan);
+    letter-spacing: 2px;
+  }
+
+  .hero-emoji-row {
+    font-size: 3rem;
+    margin: 20px 0;
+    animation: bounce 1.5s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .cta-row {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    justify-content: center; margin-top: 36px;
+  }
+
+  .btn-main {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    padding: 16px 40px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-main::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-main:hover::before { opacity: 0.15; }
+  .btn-main:hover { transform: translateY(-4px) scale(1.05); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-orange));
+    color: white;
+    box-shadow: 0 0 30px var(--neon-pink), 0 8px 30px rgba(255,45,120,0.4);
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 30px var(--neon-pink), 0 8px 30px rgba(255,45,120,0.4); }
+    50% { box-shadow: 0 0 60px var(--neon-pink), 0 8px 50px rgba(255,45,120,0.6); }
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--neon-cyan);
+    border: 2px solid var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0,245,255,0.3), inset 0 0 20px rgba(0,245,255,0.05);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(0,245,255,0.1);
+    box-shadow: 0 0 40px var(--neon-cyan);
+    color: white;
+  }
+
+  /* ZOOM SHOWCASE */
+  .zoom-section {
+    position: relative; z-index: 10;
+    padding: 80px 20px;
+    text-align: center;
+  }
+
+  .section-title {
+    font-family: 'Boogaloo', cursive;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: white;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .section-title span {
+    background: linear-gradient(135deg, var(--neon-yellow), var(--neon-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-desc {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto 50px;
+    line-height: 1.8;
+  }
+
+  /* Zoom Grid */
+  .zoom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .zoom-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .zoom-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    border-color: var(--card-accent);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px var(--card-accent);
+  }
+
+  .zoom-card:nth-child(1) { --card-accent: var(--neon-pink); }
+  .zoom-card:nth-child(2) { --card-accent: var(--neon-cyan); }
+  .zoom-card:nth-child(3) { --card-accent: var(--neon-yellow); }
+  .zoom-card:nth-child(4) { --card-accent: var(--neon-green); }
+  .zoom-card:nth-child(5) { --card-accent: var(--neon-orange); }
+  .zoom-card:nth-child(6) { --card-accent: var(--neon-purple); }
+
+  .zoom-card-screen {
+    background: #111;
+    height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .zoom-card-screen::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--card-accent), transparent);
+    opacity: 0.15;
+  }
+
+  .zoom-card-screen::after {
+    content: 'ZOOM';
+    position: absolute;
+    top: 10px; left: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--neon-green);
+    letter-spacing: 2px;
+    background: rgba(0,0,0,0.7);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .zoom-rec {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 8px; height: 8px;
+    background: red;
+    border-radius: 50%;
+    animation: recBlink 1s ease-in-out infinite;
+  }
+
+  @keyframes recBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .zoom-cat-emoji {
+    animation: catWiggle 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px var(--card-accent));
+    font-size: 5rem;
+  }
+
+  @keyframes catWiggle {
+    0%, 100% { transform: rotate(-5deg) scale(1); }
+    50% { transform: rotate(5deg) scale(1.1); }
+  }
+
+  .zoom-card-info {
+    padding: 20px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .zoom-card-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: var(--card-accent);
+    text-shadow: 0 0 15px var(--card-accent);
+    margin-bottom: 6px;
+  }
+
+  .zoom-card-tag {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 1px;
+  }
+
+  .ai-badge {
+    display: inline-block;
+    margin-top: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-accent);
+    color: var(--card-accent);
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    border-radius: 50px;
+    letter-spacing: 1px;
+  }
+
+  /* AI FEATURES */
+  .ai-section {
+    position: relative; z-index: 10;
+    padding: 80px 20px;
+    background: linear-gradient(180deg, transparent, rgba(191,0,255,0.05), transparent);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1100px;
+    margin: 50px auto 0;
+  }
+
+  .feature-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 36px 30px;
+    border: 1px solid rgba(255,255,255,0.07);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px var(--f-color);
+    border-color: var(--f-color);
+  }
+
+  .feature-card:nth-child(1) { --f-color: var(--neon-cyan); }
+  .feature-card:nth-child(2) { --f-color: var(--neon-pink); }
+  .feature-card:nth-child(3) { --f-color: var(--neon-yellow); }
+  .feature-card:nth-child(4) { --f-color: var(--neon-green); }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, var(--f-color), transparent 70%);
+    opacity: 0.08;
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    margin-bottom: 18px;
+    display: block;
+    filter: drop-shadow(0 0 15px var(--f-color));
+  }
+
+  .feature-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: var(--f-color);
+    margin-bottom: 12px;
+    text-shadow: 0 0 20px var(--f-color);
+  }
+
+  .feature-desc {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.85rem;
+    line-height: 1.8;
+  }
+
+  /* INTERACTIVE AI CHAT */
+  .chat-section {
+    position: relative; z-index: 10;
+    padding: 80px 20px;
+    text-align: center;
+  }
+
+  .chat-box {
+    max-width: 700px;
+    margin: 40px auto 0;
+    background: var(--card-bg);
+    border-radius: 24px;
+    border: 1px solid rgba(0,245,255,0.2);
+    overflow: hidden;
+    box-shadow: 0 0 60px rgba(0,245,255,0.08);
+  }
+
+  .chat-header {
+    background: linear-gradient(135deg, rgba(0,245,255,0.1), rgba(191,0,255,0.1));
+    padding: 18px 24px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .chat-header-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .chat-header-dot:nth-child(1) { background: #ff5f57; animation-delay: 0s; }
+  .chat-header-dot:nth-child(2) { background: #febc2e; animation-delay: 0.2s; }
+  .chat-header-dot:nth-child(3) { background: var(--neon-green); animation-delay: 0.4s; }
+
+  .chat-header-title {
+    font-family: 'Fredoka One', cursive;
+    color: var(--neon-cyan);
+    font-size: 1rem;
+    letter-spacing: 1px;
+    margin-left: 8px;
+  }
+
+  .chat-messages {
+    padding: 24px;
+    min-height: 200px;
+    max-height: 320px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; }
+
+  .msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    animation: msgAppear 0.4s ease forwards;
+  }
+
+  @keyframes msgAppear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .msg.bot .msg-avatar { background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)); }
+  .msg.user .msg-avatar { background: linear-gradient(135deg, var(--neon-pink), var(--neon-orange)); }
+
+  .msg-bubble {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  .msg.bot .msg-bubble {
+    background: rgba(0,245,255,0.08);
+    border: 1px solid rgba(0,245,255,0.2);
+    color: rgba(255,255,255,0.85);
+    border-top-left-radius: 4px;
+  }
+
+  .msg.user .msg-bubble {
+    background: rgba(255,45,120,0.12);
+    border: 1px solid rgba(255,45,120,0.25);
+    color: rgba(255,255,255,0.85);
+    border-top-right-radius: 4px;
+  }
+
+  .chat-input-row {
+    display: flex; gap: 12px;
+    padding: 16px 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.3);
+  }
+
+  .chat-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50px;
+    color: white;
+    padding: 12px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .chat-input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .chat-input:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0,245,255,0.15);
+  }
+
+  .chat-send-btn {
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+    border: none;
+    border-radius: 50%;
+    width: 46px; height: 46px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(0,245,255,0.3);
+  }
+
+  .chat-send-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px rgba(0,245,255,0.6);
+  }
+
+  .quick-replies {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 0 24px 16px;
+  }
+
+  .quick-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.7);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .quick-btn:hover {
+    background: rgba(0,245,255,0.1);
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+  }
+
+  /* STATS TICKER */
+  .stats-bar {
+    position: relative; z-index: 10;
+    background: linear-gradient(90deg, var(--neon-pink), var(--neon-orange), var(--neon-yellow), var(--neon-green), var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+    background-size: 200% auto;
+    animation: barShift 4s linear infinite;
+    padding: 2px 0;
+  }
+
+  @keyframes barShift {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .stats-bar-inner {
+    background: rgba(3,11,26,0.9);
+    padding: 16px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .stats-track {
+    display: inline-flex;
+    gap: 60px;
+    animation: tickerMove 30s linear infinite;
+  }
+
+  @keyframes tickerMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .stat-item {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  .stat-item:nth-child(6n+1) { color: var(--neon-pink); }
+  .stat-item:nth-child(6n+2) { color: var(--neon-cyan); }
+  .stat-item:nth-child(6n+3) { color: var(--neon-yellow); }
+  .stat-item:nth-child(6n+4) { color: var(--neon-green); }
+  .stat-item:nth-child(6n+5) { color: var(--neon-orange); }
+  .stat-item:nth-child(6n+6) { color: var(--neon-purple); }
+
+  /* FOOTER */
+  .footer {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 60px 20px 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-logo {
+    font-family: 'Boogaloo', cursive;
+    font-size: 3rem;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    display: flex; justify-content: center; gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  .footer-link {
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+  }
+
+  .footer-link:hover { color: var(--neon-cyan); }
+
+  .footer-copy {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Rainbow divider */
+  .rainbow-divider {
+    height: 3px;
+    background: linear-gradient(90deg,
+      var(--neon-pink), var(--neon-orange), var(--neon-yellow),
+      var(--neon-green), var(--neon-cyan), var(--neon-purple)
+    );
+    border: none;
+    margin: 0;
+    background-size: 200% auto;
+    animation: barShift 3s linear infinite;
+  }
+
+  /* Typing indicator */
+  .typing {
+    display: flex; align-items: center; gap: 4px;
+    padding: 8px 12px;
+  }
+
+  .typing span {
+    width: 6px; height: 6px;
+    background: var(--neon-cyan);
+    border-radius: 50%;
+    animation: typingBounce 1.2s ease-in-out infinite;
+  }
+
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typingBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50% { transform: translateY(-6px); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="bg-grid"></div>
+<div class="floating-particles" id="particles"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🤖 AI-Powered · Cats · Zoom · Vibes</div>
+  <h1 class="hero-title">PawVibesZ</h1>
+  <div class="hero-subtitle">Cats on Zoom × Artificial Intelligence</div>
+  <div class="hero-emoji-row">🐱 🤖 📹 🐾 ✨ 🧠 🐈 💻</div>
+  <div class="cta-row">
+    <a href="https://paniaguai.github.io/pawz/" target="_blank" class="btn-main btn-primary">
+      🐾 Visit Official Site
+    </a>
+  </div>
+</section>
+
+<hr class="rainbow-divider">
+
+<!-- STATS TICKER -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stats-track" id="ticker"></div>
+  </div>
+</div>
+
+<hr class="rainbow-divider">
+
+<!-- ZOOM GRID -->
+<section class="zoom-section reveal" id="zoom">
+  <h2 class="section-title">🐈 Cats <span>Live on Zoom</span></h2>
+  <p class="section-desc">Our AI-curated feline friends are always camera-ready. Join the most whisker-twitching Zoom meetings powered by machine learning.</p>
+  <div class="zoom-grid">
+    <div class="zoom-card reveal" onclick="meow(this)">
+      <div class="zoom-card-screen">
+        <div class="zoom-rec"></div>
+        <span class="zoom-cat-emoji">😸</span>
+      </div>
+      <div class="zoom-card-info">
+        <div class="zoom-card-name">Professor Whiskers</div>
+        <div class="zoom-card-tag">AI RESEARCHER · NEURAL NETS</div>
+        <div class="ai-badge">🧠 GPT-Purr Model</div>
+      </div>
+    </div>
+    <div class="zoom-card reveal" onclick="meow(this)">
+      <div class="zoom-card-screen">
+        <div class="zoom-rec"></div>
+        <span class="zoom-cat-emoji">😻</span>
+      </div>
+      <div class="zoom-card-info">
+        <div class="zoom-card-name">Dr. Fluffinator</div>
+        <div class="zoom-card-tag">DEEP LEARNING · COMPUTER VISION</div>
+        <div class="ai-badge">👁️ PawNet Vision</div>
+      </div>
+    </div>
+    <div class="zoom-card reveal" onclick="meow(this)">
+      <div class="zoom-card-screen">
+        <div class="zoom-rec"></div>
+        <span class="zoom-cat-emoji">🐱</span>
+      </div>
+      <div class="zoom-card-info">
+        <div class="zoom-card-name">Señor Mittens</div>
+        <div class="zoom-card-tag">NLP · MEOW-LANGUAGE PROCESSING</div>
+        <div class="ai-badge">💬 MeowGPT v4</div>
+      </div>
+    </div>
+    <div class="zoom-card reveal" onclick="meow(this)">
+      <div class="zoom-card-screen">
+        <div class="zoom-rec"></div>
+        <span class="zoom-cat-emoji">🙀</span>
+      </div>
+      <div class="zoom-card-info">
+        <div class="zoom-card-name">Chairman Noodle</div>
+        <div class="zoom-card-tag">ROBOTICS · AUTONOMOUS PAWS</div>
+        <div class="ai-badge">🤖 RoboKitty OS</div>
+      </div>
+    </div>
+    <div class="zoom-card reveal" onclick="meow(this)">
+      <div class="zoom-card-screen">
+        <div class="zoom-rec"></div>
+        <span class="zoom-cat-emoji">😺</span>
+      </div>
+      <div class="zoom-card-info">
+        <div class="zoom-card-name">Lady Purrfect</div>
+        <div class="zoom-card-tag">GENERATIVE AI · CREATIVE DIRECTOR</div>
+        <div class="ai-badge">🎨 StableFur Diffusion</div>
+      </div>
+    </div>
+    <div class="zoom-card reveal" onclick="meow(this)">
+      <div class="zoom-card-screen">
+        <div class="zoom-rec"></div>
+        <span class="zoom-cat-emoji">😾</span>
+      </div>
+      <div class="zoom-card-info">
+        <div class="zoom-card-name">Baron Von Hiss</div>
+        <div class="zoom-card-tag">CYBERSECURITY · ETHICAL AI</div>
+        <div class="ai-badge">🔐 CatGuard AI</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="ai-section reveal" id="features">
+  <h2 class="section-title" style="text-align:center">🤖 AI <span>Superpowers</span></h2>
+  <p class="section-desc" style="text-align:center">Cutting-edge artificial intelligence meets the world's fluffiest remote workers.</p>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <span class="feature-icon">🧠</span>
+      <div class="feature-title">PawNeural Engine</div>
+      <p class="feature-desc">Our proprietary transformer model trained on 47 billion meow sequences. Understands feline intent 340% better than humans ever could.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon">👁️</span>
+      <div class="feature-title">ZoomVision AI</div>
+      <p class="feature-desc">Real-time cat detection and pose estimation. Automatically adjusts background blur so your cat steals the spotlight — every. single. time.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon">🎙️</span>
+      <div class="feature-title">Meow Translator</div>
+      <p class="feature-desc">Natural language processing for cat vocalizations. Translates purrs, hisses, and chirps into actionable Slack messages and meeting summaries.</p>
+    </div>
+    <div class="feature-card reveal">
+      <span class="feature-icon">🌈</span>
+      <div class="feature-title">VibeScore™ AI</div>
+      <p class="feature-desc">Sentiment analysis trained exclusively on cats. Detects and quantifies Good Vibes from tail positions, ear angles, and eye dilation in real time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AI CHAT -->
+<section class="chat-section reveal">
+  <h2 class="section-title">💬 Chat with <span>PawBot AI</span></h2>
+  <p class="section-desc">Ask our AI-powered cat assistant anything about PawVibesZ, cats, or the meaning of a good belly rub.</p>
+
+  <div class="chat-box">
+    <div class="chat-header">
+      <div class="chat-header-dot"></div>
+      <div class="chat-header-dot"></div>
+      <div class="chat-header-dot"></div>
+      <span class="chat-header-title">🐾 PawBot AI — Online</span>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">
+        <div class="msg-avatar">🐱</div>
+        <div class="msg-bubble">Meow! 👋 I'm PawBot, the AI assistant for PawVibesZ. Ask me anything about our cats, Zoom meetings, or AI-powered vibes! 🐾✨</div>
+      </div>
+    </div>
+    <div class="quick-replies">
+      <button class="quick-btn" onclick="quickSend('What is PawVibesZ?')">❓ What is PawVibesZ?</button>
+      <button class="quick-btn" onclick="quickSend('Tell me about the AI features')">🤖 AI Features</button>
+      <button class="quick-btn" onclick="quickSend('Who is Professor Whiskers?')">😸 Meet the cats</button>
+      <button class="quick-btn" onclick="quickSend('How do I join a cat Zoom?')">📹 Join Zoom</button>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="Ask PawBot anything... 🐾" maxlength="200">
+      <button class="chat-send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<hr class="rainbow-divider">
+<footer class="footer">
+  <div class="footer-logo">🐾 PawVibesZ</div>
+  <div class="footer-links">
+    <a href="https://paniaguai.github.io/pawz/" target="_blank" class="footer-link">🏠 Official Site</a>
+  </div>
+  <div class="footer-copy">
+    © 2025 PawVibesZ · Built with 💜 + AI · All vibes reserved 🐾
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  document.querySelectorAll('a, button, .zoom-card, .quick-btn').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '50px';
+      cursor.style.height = '50px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '30px';
+      cursor.style.height = '30px';
+    });
+  });
+
+  // Floating particles
+  const colors = ['#ff2d78','#00f5ff','#ffe600','#39ff14','#ff6b00','#bf00ff'];
+  const particleContainer = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.classList.add('particle');
+    const size = Math.random() * 8 + 2;
+    p.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random()*100}%;
+      background: ${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration: ${Math.random()*15 + 10}s;
+      animation-delay: ${Math.random()*10}s;
+      box-shadow: 0 0 ${size*3}px ${colors[Math.floor(Math.random()*colors.length)]};
+    `;
+    particleContainer.appendChild(p);
+  }
+
+  // Ticker
+  const stats = [
+    '🐱 2,847 Cats Online', '🤖 AI Accuracy: 99.9% Purr', '📹 47,391 Zoom Sessions',
+    '🧠 Neural Net: Fully Feline', '⚡ VibeScore: MAXIMUM', '🌍 68 Countries Meowing',
+    '💜 4.2M Belly Rubs Logged', '🐾 PawVibesZ × AI = ∞',
+    '🎯 Tail Wags Detected: 9,999+', '🌈 Happiness Level: CRITICAL',
+    '🤝 Join the Revolution', '🐱 Cats on Zoom: NOW LIVE'
+  ];
+  const ticker = document.getElementById('ticker');
+  const double = [...stats, ...stats];
+  double.forEach(s => {
+    const span = document.createElement('span');
+    span.className = 'stat-item';
+    span.textContent = s;
+    ticker.appendChild(span);
+  });
+
+  // Meow card click
+  function meow(card) {
+    card.style.transform = 'scale(0.95) translateY(-12px)';
+    setTimeout(() => card.style.transform = '', 200);
+    const emoji = card.querySelector('.zoom-cat-emoji');
+    emoji.style.transform = 'scale(1.5) rotate(20deg)';
+    setTimeout(() => emoji.style.transform = '', 400);
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Chat AI
+  const botResponses = {
+    'what is pawvibesz': 'PawVibesZ is the ultimate AI-powered platform where cats rule Zoom meetings! 🐱💻 Founded by feline visionaries, we combine cutting-edge AI with certified Good Vibes™ to create the most purr-fect remote work experience. Visit our official site at paniaguai.github.io/pawz/ for the full experience! 🐾',
+    'ai features': 'We have FOUR incredible AI superpowers! 🚀\n\n🧠 PawNeural Engine — transformer AI trained on 47B meow sequences\n👁️ ZoomVision AI — real-time cat pose estimation\n🎙️ Meow Translator — NLP for cat vocalizations\n🌈 VibeScore™ — sentiment analysis from tail positions!',
+    'professor whiskers': 'Professor Whiskers is our lead AI researcher! 😸 He holds 3 PhDs in Neural Nets (from MIT — Meow Institute of Technology) and has published 42 papers on feline machine learning. His model, GPT-Purr, set world records in cat-language generation. Catch him every Tuesday on Zoom! 🧠',
+    'join a cat zoom': 'Joining is EASY! 📹\n\n1️⃣ Visit paniaguai.github.io/pawz/\n2️⃣ Pick your favorite PawVibesZ cat\n3️⃣ Hit "Join Zoom" and prepare for maximum cuteness\n4️⃣ Let our AI VibeScore™ measure your happiness levels\n\nBring treats — the cats can smell them through the camera. 🐟',
+    'default': ['Meow! 🐱 Great question! The cats are currently processing that with their neural purr-networks...', 'Purrfect inquiry! 😻 Our AI is 99.9% sure the answer involves more cats on Zoom.', '🐾 *taps keyboard with paw* According to our VibeScore™ AI, that question radiates excellent energy!', 'Our feline AI overlords are thinking... 🤖🐱 The answer: more Zoom calls, more cats, more vibes!']
+  };
+
+  function sendMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    addMsg(text, 'user');
+    input.value = '';
+    showTyping();
+    setTimeout(() => {
+      removeTyping();
+      const lc = text.toLowerCase();
+      let resp = botResponses['default'][Math.floor(Math.random()*botResponses['default'].length)];
+      for (const [key, val] of Object.entries(botResponses)) {
+        if (key !== 'default' && lc.includes(key.split(' ')[0]) && lc.includes(key.split(' ').slice(-1)[0])) {
+          resp = val; break;
+        }
+      }
+      addMsg(resp, 'bot');
+    }, 1200 + Math.random()*800);
+  }
+
+  function quickSend(text) {
+    document.getElementById('chatInput').value = text;
+    sendMessage();
+  }
+
+  function addMsg(text, role) {
+    const container = document.getElementById('chatMessages');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    div.innerHTML = `
+      <div class="msg-avatar">${role === 'bot' ? '🐱' : '👤'}</div>
+      <div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>
+    `;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  let typingEl = null;
+  function showTyping() {
+    const container = document.getElementById('chatMessages');
+    typingEl = document.createElement('div');
+    typingEl.className = 'msg bot';
+    typingEl.id = 'typingMsg';
+    typingEl.innerHTML = `<div class="msg-avatar">🐱</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+    container.appendChild(typingEl);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function removeTyping() {
+    if (typingEl) { typingEl.remove(); typingEl = null; }
+  }
+
+  document.getElementById('chatInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+</body>
+</html>
